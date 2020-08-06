@@ -73,11 +73,8 @@ const handler = async () => {
   await autoOffer();
 };
 
-if (process.env.NODE_ENV === 'development') {
-  (function() {
-    cleanOffers();
-    autoOffer();
-  })();
+if (process.env.NODE_ENV === "development") {
+  handler();
 }
 
 exports.handler = handler;
