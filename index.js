@@ -42,7 +42,6 @@ async function autoOffer() {
   console.log(`APY: ${(avg * 100 * 360).toFixed(6)}%`);
 
   const currentBalance = await getAvailableBalanceAPI(symbol);
-  console.log(currentBalance);
   const balance = currentBalance[0] * -1;
   const nextBalance = balance - offer;
 
@@ -70,8 +69,15 @@ async function autoOffer() {
 }
 
 const handler = async () => {
-  cleanOffers();
-  autoOffer();
+  await cleanOffers();
+  await autoOffer();
 };
+
+if (process.env.NODE_ENV === 'development') {
+  (function() {
+    cleanOffers();
+    autoOffer();
+  })();
+}
 
 exports.handler = handler;

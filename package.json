@@ -4,7 +4,9 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "dev": "NODE_ENV=development node index.js",
+    "build": "rm -rf *.zip && zip -r ${PWD##*/}_$(date +%s).zip . -x *.git* -x *.zip -x .env"
   },
   "dependencies": {
     "bitfinex-api-node": "^4.0.15",
