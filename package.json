@@ -9,7 +9,6 @@
     "build": "rm -rf *.zip && zip -r ${PWD##*/}_$(date +%s).zip . -x *.git* -x *.zip -x .env"
   },
   "dependencies": {
-    "bitfinex-api-node": "^4.0.15",
     "crypto-js": "^4.0.0",
     "dayjs": "^1.8.32",
     "dotenv": "^8.2.0",
