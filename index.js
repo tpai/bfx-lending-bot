@@ -85,16 +85,14 @@ async function autoOffer() {
     per: 2
   });
 
-  const keys = Object.keys(result);
-
   // got an error
-  if (keys.length <= 3) {
-    const [status, , message] = keys;
+  if (result.length <= 3) {
+    const [status, , message] = result;
     console.log(status, message);
     return;
   }
 
-  const [, , , , , , status, message] = keys;
+  const [, , , , , , status, message] = result;
   console.log(status, message);
   return autoOffer();
 }
