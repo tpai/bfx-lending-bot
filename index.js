@@ -45,26 +45,43 @@ async function autoOffer() {
   const balance = currentBalance[0] * -1;
   const nextBalance = balance - offer;
 
-  console.log(`Balance: ${balance}`);
-  console.log(`Offer: ${offer}`);
-
-  if (Number(nextBalance) < Number(keepMoney)) {
-    console.log(`> balance is not enough for this trade`);
+  if (Number(balance) === 0) {
+    console.log("> balance is not enough");
     return;
   }
 
-  let newOffer;
-  if (Number(nextBalance) === Number(keepMoney)) {
-    newOffer = offer - 0.00001;
+  console.log(`Balance: ${balance}`);
+  console.log(`Offer: ${offer}`);
+
+  let finalOffer;
+  if (Number(nextBalance) < Number(keepMoney)) {
+    if (Number(keepMoney) < 0) {
+      console.log("> keepMoney setting is invalid");
+      return;
+    } else if (Number(keepMoney) > 0) {
+      console.log(`> balance is not enough for this trade`);
+      return;
+    }
+
+    // offer the rest balance when user set keepMoney to 0
+    finalOffer = balance;
+
+    if (Number(finalOffer) < 50) {
+      console.log("> final offer is less than $50");
+      return;
+    }
+    console.log(`Final Offer: ${finalOffer}`);
   }
 
   const [, , , , , , status, text] = await createOfferAPI({
     symbol,
-    offer: newOffer ? newOffer : offer,
+    offer: finalOffer ? finalOffer : offer,
     avg,
     per: 2
   });
+
   console.log(status, text);
+
   return autoOffer();
 }
 
