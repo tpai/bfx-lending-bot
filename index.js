@@ -67,21 +67,35 @@ async function autoOffer() {
     finalOffer = balance;
 
     if (Number(finalOffer) < 50) {
+      console.log(`Final Offer: ${finalOffer}`);
       console.log("> final offer is less than $50");
       return;
     }
+
+    // in order to prevent balance become complete 0
+    finalOffer -= 0.000001;
+
     console.log(`Final Offer: ${finalOffer}`);
   }
 
-  const [, , , , , , status, text] = await createOfferAPI({
+  const result = await createOfferAPI({
     symbol,
     offer: finalOffer ? finalOffer : offer,
     avg,
     per: 2
   });
 
-  console.log(status, text);
+  const keys = Object.keys(result);
 
+  // got an error
+  if (keys.length <= 3) {
+    const [status, , message] = keys;
+    console.log(status, message);
+    return;
+  }
+
+  const [, , , , , , status, message] = keys;
+  console.log(status, message);
   return autoOffer();
 }
 
