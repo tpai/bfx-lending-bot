@@ -20,7 +20,7 @@ module.exports = {
       return { err: "get trades api error" };
     }
   },
-  createOfferAPI: async ({ symbol, offer, avg, per }) => {
+  createOfferAPI: async ({ symbol = "fUSD", offer, avg, per }) => {
     try {
       const body = {
         type: "LIMIT",
@@ -67,11 +67,11 @@ module.exports = {
       return { err: "get wallets api error" };
     }
   },
-  getAvailableBalanceAPI: async symbol => {
+  getAvailableBalanceAPI: async (symbol = "fUSD") => {
     try {
       const body = {
         symbol,
-        type: "FUNDING",
+        type: "FUNDING"
       };
       const apiPath = "v2/auth/calc/order/avail";
       const url = `${host}${apiPath}`;
