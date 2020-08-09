@@ -44,11 +44,6 @@ async function autoOffer() {
   const currentBalance = await getAvailableBalanceAPI(symbol);
   const balance = currentBalance[0] * -1;
 
-  if (Number(balance) === 0) {
-    console.log("> balance is not enough");
-    return;
-  }
-
   console.log(`Balance: ${balance}`);
   console.log(`Offer: ${offer}`);
 
@@ -58,6 +53,11 @@ async function autoOffer() {
     restMoney % offer >= 50
       ? restMoney - 0.000001 // balance must not become 0
       : 0;
+
+  if (restMoney < 0) {
+    console.log('> balance is not enough');
+    return;
+  }
 
   const promises = Array(offerTimes)
     .fill(1)
