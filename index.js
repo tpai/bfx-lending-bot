@@ -54,7 +54,7 @@ async function autoOffer() {
       ? restMoney - 0.000001 // balance must not become 0
       : 0;
 
-  if (restMoney < 0) {
+  if (restMoney < 0 || restMoney < offer) {
     console.log('> balance is not enough');
     return;
   }
