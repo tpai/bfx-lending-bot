@@ -11,6 +11,7 @@ const symbol = process.env.SYMBOL;
 const offer = process.env.EACH_OFFER;
 const keepMoney = process.env.KEEP_MONEY;
 const baseRate = process.env.BASE_RATE;
+const jumpRate = process.env.JUMP_RATE;
 
 console.log("=========================");
 
@@ -55,16 +56,20 @@ async function autoOffer() {
       : 0;
 
   if (restMoney < 0 || restMoney < offer) {
-    console.log('> balance is not enough');
+    console.log("> balance is not enough");
     return;
   }
 
+  let period = rate >= jumpRate ? 30 : 2;
+
   const promises = Array(offerTimes)
     .fill(1)
-    .map(() => createOfferAPI({ symbol, offer, rate, per: 2 }));
+    .map(() => createOfferAPI({ symbol, offer, rate, per: period }));
 
   if (lowOffer > 0) {
-    promises.push(createOfferAPI({ symbol, offer: lowOffer, rate, per: 2 }));
+    promises.push(
+      createOfferAPI({ symbol, offer: lowOffer, rate, per: period })
+    );
   }
 
   Promise.all(promises)
