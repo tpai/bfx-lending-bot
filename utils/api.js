@@ -20,14 +20,14 @@ module.exports = {
       return { err: "get trades api error" };
     }
   },
-  createOfferAPI: async ({ symbol = "fUSD", offer, avg, per }) => {
+  createOfferAPI: async ({ symbol = "fUSD", offer, rate, per }) => {
     try {
       const body = {
         type: "LIMIT",
         symbol,
         amount: `${offer}`,
-        rate: avg,
-        period: per
+        rate: `${rate}`,
+        period: Number(per)
       };
       const apiPath = "v2/auth/w/funding/offer/submit";
       const url = `${host}${apiPath}`;

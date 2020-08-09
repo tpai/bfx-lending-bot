@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const { getTradesAPI } = require("./api");
 
 module.exports = async function(symbol, period) {
@@ -9,7 +11,11 @@ module.exports = async function(symbol, period) {
     }
     return result;
   }, map);
-  const rates = Array.from(map).map(([rate, _]) => rate);
-  const sum = rates.reduce((sum, n) => (sum += n), 0);
-  return (sum / rates.length).toFixed(8);
+  let max = Number(process.env.BASE_RATE) / 100;
+  Array.from(map).map(([rate, _]) => {
+    if (rate > max) {
+      max = rate;
+    }
+  });
+  return max.toFixed(8);
 };

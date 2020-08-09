@@ -5,7 +5,7 @@ const {
   getAvailableBalanceAPI,
   cancelAllFundingOffersAPI
 } = require("./utils/api");
-const getAvgRate = require("./utils/getAvgRate");
+const getMaxRate = require("./utils/getMaxRate");
 
 const symbol = process.env.SYMBOL;
 const offer = process.env.EACH_OFFER;
@@ -29,21 +29,20 @@ async function cleanOffers() {
 }
 
 async function autoOffer() {
-  const avg = await getAvgRate(symbol, 2);
+  const rate = await getMaxRate(symbol, 2);
   const expectedRate = baseRate / 100;
 
-  console.log(`Avg: ${avg}`);
+  console.log(`Rate: ${rate}`);
   console.log(`Expected: ${expectedRate}`);
 
-  if (avg < expectedRate) {
-    console.log("> current avg rate is lower than expected rate");
+  if (rate < expectedRate) {
+    console.log("> current rate rate is lower than expected rate");
     return;
   }
-  console.log(`APY: ${(avg * 100 * 360).toFixed(6)}%`);
+  console.log(`APY: ${(rate * 100 * 360).toFixed(6)}%`);
 
   const currentBalance = await getAvailableBalanceAPI(symbol);
   const balance = currentBalance[0] * -1;
-  const nextBalance = balance - offer;
 
   if (Number(balance) === 0) {
     console.log("> balance is not enough");
@@ -53,48 +52,36 @@ async function autoOffer() {
   console.log(`Balance: ${balance}`);
   console.log(`Offer: ${offer}`);
 
-  let finalOffer;
-  if (Number(nextBalance) < Number(keepMoney)) {
-    if (Number(keepMoney) < 0) {
-      console.log("> keepMoney setting is invalid");
-      return;
-    } else if (Number(keepMoney) > 0) {
-      console.log(`> balance is not enough for this trade`);
-      return;
-    }
+  const restMoney = balance - keepMoney;
+  const offerTimes = Math.floor(restMoney / offer);
+  const lowOffer =
+    restMoney % offer >= 50
+      ? restMoney - 0.000001 // balance must not become 0
+      : 0;
 
-    // offer the rest balance when user set keepMoney to 0
-    finalOffer = balance;
+  const promises = Array(offerTimes)
+    .fill(1)
+    .map(() => createOfferAPI({ symbol, offer, rate, per: 2 }));
 
-    if (Number(finalOffer) < 50) {
-      console.log(`Final Offer: ${finalOffer}`);
-      console.log("> final offer is less than $50");
-      return;
-    }
-
-    // in order to prevent balance become complete 0
-    finalOffer -= 0.000001;
-
-    console.log(`Final Offer: ${finalOffer}`);
+  if (lowOffer > 0) {
+    promises.push(createOfferAPI({ symbol, offer: lowOffer, rate, per: 2 }));
   }
 
-  const result = await createOfferAPI({
-    symbol,
-    offer: finalOffer ? finalOffer : offer,
-    avg,
-    per: 2
-  });
-
-  // got an error
-  if (result.length <= 3) {
-    const [status, , message] = result;
-    console.log(status, message);
-    return;
-  }
-
-  const [, , , , , , status, message] = result;
-  console.log(status, message);
-  return autoOffer();
+  Promise.all(promises)
+    .then(result => {
+      result.map(trade => {
+        if (trade.length <= 3) {
+          const [status, , message] = trade;
+          console.log(status, message);
+          return;
+        }
+        const [, , , , , , status, message] = trade;
+        console.log(status, message);
+      });
+    })
+    .catch(err => {
+      console.log(err);
+    });
 }
 
 const handler = async () => {
