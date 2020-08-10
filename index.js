@@ -7,22 +7,8 @@ const {
 } = require("./utils/api");
 const getMaxRate = require("./utils/getMaxRate");
 
-const symbol = process.env.SYMBOL;
-const offer = process.env.EACH_OFFER;
-const keepMoney = process.env.KEEP_MONEY;
-const baseRate = process.env.BASE_RATE;
-const jumpRate = process.env.JUMP_RATE;
-
-console.log("=========================");
-
-console.log(`Symbol: ${symbol}`);
-console.log(`Keep money: ${keepMoney}`);
-console.log(`Base Rate: ${baseRate}`);
-console.log(`Offer: ${offer}`);
-
-console.log("=========================");
-
 async function cleanOffers() {
+  const symbol = process.env.SYMBOL;
   const [, , , , , , status, text] = await cancelAllFundingOffersAPI({
     currency: symbol.replace("f", "")
   });
@@ -30,6 +16,21 @@ async function cleanOffers() {
 }
 
 async function autoOffer() {
+  const symbol = process.env.SYMBOL;
+  const offer = process.env.EACH_OFFER;
+  const keepMoney = process.env.KEEP_MONEY;
+  const baseRate = process.env.BASE_RATE;
+  const jumpRate = process.env.JUMP_RATE;
+
+  console.log("=========================");
+
+  console.log(`Symbol: ${symbol}`);
+  console.log(`Keep money: ${keepMoney}`);
+  console.log(`Base Rate: ${baseRate}`);
+  console.log(`Offer: ${offer}`);
+
+  console.log("=========================");
+
   const rate = await getMaxRate(symbol, 2);
   const expectedRate = baseRate / 100;
 
