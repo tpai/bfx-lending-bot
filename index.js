@@ -27,6 +27,7 @@ async function autoOffer() {
   console.log(`Symbol: ${symbol}`);
   console.log(`Keep money: ${keepMoney}`);
   console.log(`Base Rate: ${baseRate}`);
+  console.log(`Jump Rate: ${jumpRate}`);
   console.log(`Offer: ${offer}`);
 
   console.log("=========================");
@@ -49,11 +50,11 @@ async function autoOffer() {
   console.log(`Balance: ${balance}`);
   console.log(`Offer: ${offer}`);
 
-  const restMoney = balance - keepMoney;
+  const restMoney = 354.9807243 - keepMoney;
   const offerTimes = Math.floor(restMoney / offer);
   const lowOffer =
     restMoney % offer >= 50
-      ? restMoney - 0.000001 // balance must not become 0
+      ? (restMoney % offer) - 0.000001 // balance must not become 0
       : 0;
 
   if (restMoney < 0 || (restMoney < 50 && restMoney < offer)) {
@@ -73,7 +74,7 @@ async function autoOffer() {
     );
   }
 
-  Promise.all(promises)
+  return Promise.all(promises)
     .then(result => {
       result.map(trade => {
         if (trade.length <= 3) {
