@@ -25,8 +25,8 @@ module.exports = {
       const body = {
         type: "LIMIT",
         symbol,
-        amount: `${offer}`,
-        rate: `${rate}`,
+        amount: Number(offer).toFixed(6),
+        rate: Number(rate).toFixed(6),
         period: Number(per)
       };
       const apiPath = "v2/auth/w/funding/offer/submit";

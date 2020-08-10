@@ -50,7 +50,7 @@ async function autoOffer() {
   console.log(`Balance: ${balance}`);
   console.log(`Offer: ${offer}`);
 
-  const restMoney = 354.9807243 - keepMoney;
+  const restMoney = balance - keepMoney;
   const offerTimes = Math.floor(restMoney / offer);
   const lowOffer =
     restMoney % offer >= 50
