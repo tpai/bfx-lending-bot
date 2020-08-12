@@ -6,7 +6,11 @@
   "scripts": {
     "start": "node index.js",
     "dev": "NODE_ENV=development node index.js",
-    "build": "rm -rf *.zip && zip -r ${PWD##*/}_$(date +%s).zip . -x *.git* -x *.zip -x .env"
+    "ts:build": "tsc",
+    "ts:watch": "tsc -w",
+    "archive": "rm -rf *.zip && zip -r lambda.zip index.js utils/* node_modules/* package.json",
+    "build": "yarn archive && yarn ts:build",
+    "deploy": "yarn build && cdk deploy"
   },
   "dependencies": {
     "crypto-js": "^4.0.0",
@@ -14,5 +18,13 @@
     "dotenv": "^8.2.0",
     "node-fetch": "^2.6.0",
     "query-string": "^6.13.1"
+  },
+  "devDependencies": {
+    "@aws-cdk/aws-events": "^1.57.0",
+    "@aws-cdk/aws-events-targets": "^1.57.0",
+    "@aws-cdk/aws-lambda": "^1.57.0",
+    "@aws-cdk/core": "^1.57.0",
+    "@types/node": "^14.0.27",
+    "typescript": "^3.9.7"
   }
 }
