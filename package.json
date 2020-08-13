@@ -9,8 +9,8 @@
     "ts:build": "tsc",
     "ts:watch": "tsc -w",
     "archive": "rm -rf *.zip && zip -r lambda.zip index.js utils/* node_modules/* package.json",
-    "build": "yarn archive && yarn ts:build",
-    "deploy": "yarn build && cdk deploy"
+    "build": "rm -rf node_modules && yarn install --production && yarn archive",
+    "deploy": "yarn ts:build && yarn build && cdk deploy"
   },
   "dependencies": {
     "crypto-js": "^4.0.0",
