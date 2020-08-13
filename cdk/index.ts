@@ -30,7 +30,7 @@ export class LambdaCronStack extends cdk.Stack {
       KEEP_MONEY
     };
     console.log(env);
-    const lambdaFn = new lambda.Function(this, "Singleton", {
+    const lambdaFn = new lambda.Function(this, SYMBOL, {
       code: lambda.Code.fromAsset("./lambda.zip"),
       handler: "index.handler",
       runtime: lambda.Runtime.NODEJS_12_X,
