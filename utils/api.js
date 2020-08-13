@@ -14,10 +14,12 @@ module.exports = {
       })}`;
       const res = await fetch(url);
       const json = await res.json();
-      return json;
+      if (json instanceof Array) {
+        return json;
+      }
+      throw new Error("get trades api error");
     } catch (err) {
-      console.log(err);
-      return { err: "get trades api error" };
+      throw new Error("get trades api error");
     }
   },
   createOfferAPI: async ({ symbol = "fUSD", offer, rate, per }) => {
@@ -43,8 +45,7 @@ module.exports = {
       const json = await res.json();
       return json;
     } catch (err) {
-      console.log(err);
-      return { err: "create offer api error" };
+      throw new Error("create offer api error");
     }
   },
   getWalletsAPI: async () => {
@@ -63,8 +64,7 @@ module.exports = {
       const json = await res.json();
       return json;
     } catch (err) {
-      console.log(err);
-      return { err: "get wallets api error" };
+      throw new Error("get wallets api error");
     }
   },
   getAvailableBalanceAPI: async (symbol = "fUSD") => {
@@ -87,8 +87,7 @@ module.exports = {
       const json = await res.json();
       return json;
     } catch (err) {
-      console.log(err);
-      return { err: "get available balance api error" };
+      throw new Error("get available balance api error");
     }
   },
   cancelAllFundingOffersAPI: async body => {
@@ -107,7 +106,15 @@ module.exports = {
       const json = await res.json();
       return json;
     } catch (err) {
-      return { err: "cancel all funding offers api error" };
+      throw new Error("cancel all funding offers api error");
     }
+  },
+  handleResponse: response => {
+    if (response.length <= 3) {
+      const [status, , message] = response;
+      return { status, message };
+    }
+    const [, , , , , , status, message] = response;
+    return { status, message };
   }
 };
