@@ -12,7 +12,7 @@ BFX bot runs automatic funding offer for Bitfinex. (AWS based)
    brew install awscli aws-cdk
    ```
 
-1. Create a AWS IAM user account with `AWSLambdaFullAccess` permission policy.
+1. Create a AWS IAM user account with `AWSLambdaFullAccess`, `IAMFullAccess` and `AWSCloudFormationFullAccess` permission policy.
 
 1. Create access keys in security creadential tab.
 
