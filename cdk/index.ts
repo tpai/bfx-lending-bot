@@ -10,6 +10,7 @@ const {
   API_SECRET = "",
   SYMBOL = "fUSD",
   EACH_OFFER = "300",
+  LOWEST_OFFER = "100",
   BASE_RATE = "0.04",
   JUMP_RATE = "0.06",
   KEEP_MONEY = "0"
@@ -25,6 +26,7 @@ export class LambdaCronStack extends cdk.Stack {
       API_SECRET,
       SYMBOL,
       EACH_OFFER,
+      LOWEST_OFFER,
       BASE_RATE,
       JUMP_RATE,
       KEEP_MONEY
