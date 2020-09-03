@@ -22,6 +22,12 @@ BFX bot runs automatic funding offer for Bitfinex. (AWS based)
    aws configure
    ```
 
+1. Initialize CDK toolkit
+
+   ```
+   cdk bootstrap
+   ```
+
 ### Define Bot Configurations
 
 1. [Create a Bitfinex account](https://www.bitfinex.com/?refcode=u_ymELCkS) and create access keys.
