@@ -44,7 +44,7 @@ async function autoOffer() {
 
   try {
     const rate = await getMaxRate(symbol, 2);
-    const expectedRate = baseRate / 100;
+    const expectedRate = +(baseRate / 100).toFixed(6); // fix floating point math
 
     console.log(`Rate: ${rate}`);
     console.log(`Expected: ${expectedRate}`);
