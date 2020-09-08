@@ -32,20 +32,40 @@ export class LambdaCronStack extends cdk.Stack {
       KEEP_MONEY
     };
     console.log(env);
-    const lambdaFn = new lambda.Function(this, SYMBOL, {
-      code: lambda.Code.fromAsset("./lambda.zip"),
-      handler: "index.handler",
-      runtime: lambda.Runtime.NODEJS_12_X,
-      environment: env,
-      timeout: cdk.Duration.seconds(10),
-      retryAttempts: 0
+
+    const symbols = SYMBOL.split(",");
+    const eachOffers = EACH_OFFER.split(",");
+    const lowestOffers = LOWEST_OFFER.split(",");
+    const baseRates = BASE_RATE.split(",");
+    const jumpRates = JUMP_RATE.split(",");
+    const keepMoneys = KEEP_MONEY.split(",");
+    const lambdaFns = symbols.map((symbol, i) => {
+      return new lambda.Function(this, symbol, {
+        code: lambda.Code.fromAsset("./lambda.zip"),
+        handler: "index.handler",
+        runtime: lambda.Runtime.NODEJS_12_X,
+        environment: {
+          API_KEY,
+          API_SECRET,
+          SYMBOL: symbol,
+          EACH_OFFER: eachOffers[i],
+          LOWEST_OFFER: lowestOffers[i],
+          BASE_RATE: baseRates[i],
+          JUMP_RATE: jumpRates[i],
+          KEEP_MONEY: keepMoneys[i],
+        },
+        timeout: cdk.Duration.seconds(10),
+        retryAttempts: 0
+      });
     });
 
     const rule = new events.Rule(this, "Rule", {
       schedule: events.Schedule.expression("rate(5 minutes)")
     });
 
-    rule.addTarget(new targets.LambdaFunction(lambdaFn));
+    for (let i = 0; i < lambdaFns.length; i++) {
+      rule.addTarget(new targets.LambdaFunction(lambdaFns[i]));
+    }
   }
 }
 

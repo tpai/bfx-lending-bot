@@ -47,6 +47,17 @@ BFX bot runs automatic funding offer for Bitfinex. (AWS based)
    JUMP_RATE=0.06
    KEEP_MONEY=0
    ```
+1. Support multiple currencies.
+
+   ```sh
+   # config
+   SYMBOL=fUSD,fUST
+   EACH_OFFER=500,500
+   LOWEST_OFFER=400,200
+   BASE_RATE=0.03,0.04
+   JUMP_RATE=0.06,0.06
+   KEEP_MONEY=2000,0
+   ```
 
 ## Usage
 
