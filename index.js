@@ -44,13 +44,13 @@ async function autoOffer() {
 
   try {
     const rate = await getMaxRate(symbol, 2);
-    const expectedRate = +(baseRate / 100).toFixed(6); // fix floating point math
+    const expectedRate = (+baseRate / 100).toFixed(6); // fix floating point math
 
     console.log(`Rate: ${rate}`);
     console.log(`Expected: ${expectedRate}`);
 
     if (rate < expectedRate) {
-      throw new Error("current rate rate is lower than expected rate");
+      throw new Error("current rate is lower than expected rate");
     }
     console.log(`APY: ${(rate * 100 * 360).toFixed(6)}%`);
 
