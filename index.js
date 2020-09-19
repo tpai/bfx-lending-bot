@@ -24,12 +24,12 @@ async function cleanOffers() {
 }
 
 async function autoOffer() {
-  const symbol = process.env.SYMBOL;
-  const keepMoney = process.env.KEEP_MONEY;
-  const baseRate = process.env.BASE_RATE;
-  const jumpRate = process.env.JUMP_RATE;
-  const offer = process.env.EACH_OFFER;
-  const lowestOffer = process.env.LOWEST_OFFER;
+  const symbol = process.env.SYMBOL.split(",")[0];
+  const keepMoney = process.env.KEEP_MONEY.split(",")[0];
+  const baseRate = process.env.BASE_RATE.split(",")[0];
+  const jumpRate = process.env.JUMP_RATE.split(",")[0];
+  const offer = process.env.EACH_OFFER.split(",")[0];
+  const lowestOffer = process.env.LOWEST_OFFER.split(",")[0];
 
   console.log("=========================");
 
