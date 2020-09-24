@@ -22,7 +22,7 @@ module.exports = {
       throw new Error("get trades api error");
     }
   },
-  createOfferAPI: async ({ symbol = "fUSD", offer, rate, per }) => {
+  createOfferAPI: async (symbol = "fUSD", { offer, rate, per }) => {
     try {
       const body = {
         type: "LIMIT",
@@ -48,25 +48,6 @@ module.exports = {
       throw new Error("create offer api error");
     }
   },
-  getWalletsAPI: async () => {
-    try {
-      const apiPath = "v2/auth/r/wallets";
-      const url = `${host}${apiPath}`;
-      const headers = getAuthHeaders(apiPath, {});
-      const res = await fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          ...headers
-        },
-        body: JSON.stringify({})
-      });
-      const json = await res.json();
-      return json;
-    } catch (err) {
-      throw new Error("get wallets api error");
-    }
-  },
   getAvailableBalanceAPI: async (symbol = "fUSD") => {
     try {
       const body = {
@@ -90,8 +71,11 @@ module.exports = {
       throw new Error("get available balance api error");
     }
   },
-  cancelAllFundingOffersAPI: async body => {
+  cancelAllFundingOffersAPI: async (symbol = "fUSD") => {
     try {
+      const body = {
+        currency: symbol.replace("f", "")
+      };
       const apiPath = "v2/auth/w/funding/offer/cancel/all";
       const url = `${host}${apiPath}`;
       const headers = getAuthHeaders(apiPath, body);

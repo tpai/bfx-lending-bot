@@ -13,9 +13,7 @@ const getMaxRate = require("./utils/getMaxRate");
 async function cleanOffers() {
   const symbol = process.env.SYMBOL;
   try {
-    const response = await cancelAllFundingOffersAPI({
-      currency: symbol.replace("f", "")
-    });
+    const response = await cancelAllFundingOffersAPI(symbol);
     const { status, message } = handleResponse(response);
     console.log(status, message);
   } catch (err) {
@@ -77,11 +75,11 @@ async function autoOffer() {
 
     const promises = Array(offerTimes)
       .fill(1)
-      .map(() => createOfferAPI({ symbol, offer, rate, per: period }));
+      .map(() => createOfferAPI(symbol, { offer, rate, per: period }));
 
     if (lowOffer > 0) {
       promises.push(
-        createOfferAPI({ symbol, offer: lowOffer, rate, per: period })
+        createOfferAPI(symbol, { offer: lowOffer, rate, per: period })
       );
     }
 
