@@ -119,4 +119,6 @@ dist
 *.zip
 
 # AWS CDK
+cdk/index.js
+cdk/index.d.ts
 cdk.out/*
