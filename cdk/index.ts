@@ -70,5 +70,5 @@ export class LambdaCronStack extends cdk.Stack {
 }
 
 const app = new cdk.App();
-new LambdaCronStack(app, "bfx-bot");
+new LambdaCronStack(app, "bfx-lending-bot");
 app.synth();

@@ -1,6 +1,6 @@
-# BFX Bot
+# BFX Lending Bot
 
-BFX bot runs automatic funding offer for Bitfinex. (AWS based)
+BFX lending bot runs automatic funding offer for Bitfinex. (AWS based)
 
 ## Prerequisites
 
