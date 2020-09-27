@@ -4,13 +4,13 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "node index.js",
-    "dev": "NODE_ENV=development node index.js",
-    "ts:build": "tsc",
-    "ts:watch": "tsc -w",
-    "archive": "rm -rf *.zip && zip -r lambda.zip index.js utils/* node_modules/* package.json",
-    "build": "rm -rf node_modules && yarn install --production && yarn archive",
-    "deploy": "yarn build && yarn && yarn ts:build && cdk deploy"
+    "start": "yarn ts:src && NODE_ENV=development node index.js",
+    "dev": "NODE_ENV=development ts-node src/index.ts",
+    "ts:src": "tsc --outDir . src/index.ts",
+    "clear": "rm -rf lambda.zip index.js utils constants",
+    "archive": "rm -rf lambda.zip && zip -r lambda.zip index.js utils/* constants/* node_modules/* package.json",
+    "build": "yarn ts:src && rm -rf node_modules && yarn install --production && yarn archive",
+    "deploy": "yarn build && yarn && cdk deploy"
   },
   "dependencies": {
     "crypto-js": "^4.0.0",

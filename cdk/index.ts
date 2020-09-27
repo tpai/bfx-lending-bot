@@ -17,8 +17,8 @@ const {
 } = process.env;
 
 export class LambdaCronStack extends cdk.Stack {
-  constructor(scope: cdk.App, id: string, props?: cdk.StackProps) {
-    super(scope, id, props);
+  constructor(scope: cdk.App, id: string) {
+    super(scope, id);
 
     const env = {
       NODE_ENV: "production",
