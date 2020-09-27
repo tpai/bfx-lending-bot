@@ -117,6 +117,9 @@ dist
 
 # Output
 *.zip
+constants/*
+utils/*
+index.js
 
 # AWS CDK
 cdk/index.js
