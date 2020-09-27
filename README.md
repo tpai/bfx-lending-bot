@@ -61,10 +61,16 @@ BFX lending bot runs automatic funding in Bitfinex. (AWS based)
 
 ## Usage
 
-Deploy whole stack onto AWS cloud with a single command.
+Deploy whole stack to AWS cloud with a single command.
 
-```sh
-yarn deploy
+```console
+$ yarn deploy
+```
+
+Execute under development mode (typescript)
+
+```console
+$ yarn dev
 ```
 
 ## Support
