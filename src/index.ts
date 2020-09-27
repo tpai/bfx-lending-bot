@@ -1,20 +1,23 @@
-require("dotenv").config();
+import { config } from "dotenv";
+config();
 
-require("./utils/polyfill");
-
-const {
-  createOfferAPI,
+import "./utils/polyfill";
+import {
   getAvailableBalanceAPI,
   cancelAllFundingOffersAPI,
-  handleResponse
-} = require("./utils/api");
-const getMaxRate = require("./utils/getMaxRate");
+  handleResponse,
+  SimpleResponse,
+  createOfferAPI
+} from "./utils/api";
+import { OFFER_SYMBOL } from "./constants/offer";
+import getMaxRate from "./utils/getMaxRate";
 
 async function cleanOffers() {
-  const symbol = process.env.SYMBOL;
+  const { SYMBOL = OFFER_SYMBOL.USD } = process.env;
+  const symbol: OFFER_SYMBOL = SYMBOL.split(",")[0] as OFFER_SYMBOL;
   try {
     const response = await cancelAllFundingOffersAPI(symbol);
-    const { status, message } = handleResponse(response);
+    const { status, message }: SimpleResponse = handleResponse(response);
     console.log(status, message);
   } catch (err) {
     throw err;
@@ -22,12 +25,21 @@ async function cleanOffers() {
 }
 
 async function autoOffer() {
-  const symbol = process.env.SYMBOL.split(",")[0];
-  const keepMoney = process.env.KEEP_MONEY.split(",")[0];
-  const baseRate = process.env.BASE_RATE.split(",")[0];
-  const jumpRate = process.env.JUMP_RATE.split(",")[0];
-  const offer = process.env.EACH_OFFER.split(",")[0];
-  const lowestOffer = process.env.LOWEST_OFFER.split(",")[0];
+  const {
+    SYMBOL = OFFER_SYMBOL.USD,
+    KEEP_MONEY = "0",
+    BASE_RATE = "0.03",
+    JUMP_RATE = "0.06",
+    EACH_OFFER = "500",
+    LOWEST_OFFER = "50"
+  } = process.env;
+
+  const symbol: OFFER_SYMBOL = SYMBOL.split(",")[0] as OFFER_SYMBOL;
+  const keepMoney: number = +KEEP_MONEY.split(",")[0];
+  const baseRate: number = +BASE_RATE.split(",")[0];
+  const jumpRate: number = +JUMP_RATE.split(",")[0];
+  const offer: number = +EACH_OFFER.split(",")[0];
+  const lowestOffer: number = +LOWEST_OFFER.split(",")[0];
 
   console.log("=========================");
 
@@ -42,7 +54,7 @@ async function autoOffer() {
 
   try {
     const rate = await getMaxRate(symbol, 2);
-    const expectedRate = (+baseRate / 100).toFixed(6); // fix floating point math
+    const expectedRate = +(baseRate / 100).toFlooredFixed(6);
 
     console.log(`Rate: ${rate}`);
     console.log(`Expected: ${expectedRate}`);

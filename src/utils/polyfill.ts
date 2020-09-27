@@ -1,3 +1,8 @@
+interface Number {
+  noExponents: () => string;
+  toFlooredFixed: (d: number) => number;
+}
+
 Number.prototype.noExponents = function() {
   var data = String(this).split(/[eE]/);
   if (data.length == 1) return data[0];
@@ -15,4 +20,8 @@ Number.prototype.noExponents = function() {
   mag -= str.length;
   while (mag--) z += "0";
   return str + z;
+};
+
+Number.prototype.toFlooredFixed = function(d: number): number {
+  return +(Math.floor(+this * Math.pow(10, d)) / Math.pow(10, d)).toFixed(d);
 };

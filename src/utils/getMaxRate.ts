@@ -1,12 +1,13 @@
 require("dotenv").config();
 
-const { getTradesAPI } = require("./api");
+import { getTradesAPI } from "./api";
+import { OFFER_SYMBOL } from "../constants/offer";
 
-module.exports = async function(symbol, period) {
+async function getMaxRate(symbol: OFFER_SYMBOL, period: number): Promise<number> {
   try {
     const trades = await getTradesAPI(symbol);
     const map = new Map();
-    trades.reduce((result, [, , , rate, per]) => {
+    trades.reduce((result: Map<string, number>, [, , , rate, per]) => {
       if (period === per && !result.has(rate)) {
         result.set(rate, 1);
       }
@@ -22,4 +23,6 @@ module.exports = async function(symbol, period) {
   } catch (err) {
     throw err;
   }
-};
+}
+
+export default getMaxRate;
