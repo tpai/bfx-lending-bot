@@ -83,7 +83,7 @@ async function autoOffer() {
       throw new Error("balance is not enough");
     }
 
-    let period = rate >= jumpRate ? 30 : 2;
+    let period = rate >= jumpRate ? 120 : 2;
 
     const promises = Array(offerTimes)
       .fill(1)
