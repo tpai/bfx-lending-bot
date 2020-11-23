@@ -37,7 +37,7 @@ async function autoOffer() {
   const symbol: OFFER_SYMBOL = SYMBOL.split(",")[0] as OFFER_SYMBOL;
   const keepMoney: number = +KEEP_MONEY.split(",")[0];
   const baseRate: number = +BASE_RATE.split(",")[0];
-  const jumpRate: number = +JUMP_RATE.split(",")[0];
+  const jumpRate: number = +JUMP_RATE.split(",")[0] / 100;
   const offer: number = +EACH_OFFER.split(",")[0];
   const lowestOffer: number = +LOWEST_OFFER.split(",")[0];
 
