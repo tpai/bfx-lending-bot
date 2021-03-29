@@ -54,7 +54,7 @@ export class LambdaCronStack extends cdk.Stack {
           JUMP_RATE: jumpRates[i],
           KEEP_MONEY: keepMoneys[i],
         },
-        timeout: cdk.Duration.seconds(10),
+        timeout: cdk.Duration.seconds(5),
         retryAttempts: 0
       });
     });
