@@ -31,7 +31,6 @@ async function autoOffer() {
     BASE_RATE = "0.03",
     JUMP_RATE = "0.06",
     EACH_OFFER = "500",
-    LOWEST_OFFER = "50"
   } = process.env;
 
   const symbol: OFFER_SYMBOL = SYMBOL.split(",")[0] as OFFER_SYMBOL;
@@ -39,7 +38,6 @@ async function autoOffer() {
   const baseRate: number = +BASE_RATE.split(",")[0];
   const jumpRate: number = +JUMP_RATE.split(",")[0] / 100;
   const offer: number = +EACH_OFFER.split(",")[0];
-  const lowestOffer: number = +LOWEST_OFFER.split(",")[0];
 
   console.log("=========================");
 
@@ -48,7 +46,6 @@ async function autoOffer() {
   console.log(`Base Rate: ${baseRate}`);
   console.log(`Jump Rate: ${jumpRate}`);
   console.log(`Offer: ${offer}`);
-  console.log(`Lowest Offer: ${lowestOffer}`);
 
   console.log("=========================");
 
@@ -73,13 +70,13 @@ async function autoOffer() {
     const restMoney = balance - keepMoney;
     const offerTimes = Math.floor(restMoney / offer);
     const lowOffer =
-      restMoney % offer >= lowestOffer
+      restMoney % offer >= 50 // minimum offer is $50
         ? (restMoney % offer) - 0.000001 // balance must not become 0
         : 0;
 
     console.log(`Low Offer: ${lowOffer}`);
 
-    if (restMoney < 0 || (restMoney < lowestOffer && restMoney < offer)) {
+    if (restMoney < 0 || (restMoney < 50 && restMoney < offer)) {
       throw new Error("balance is not enough");
     }
 

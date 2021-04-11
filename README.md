@@ -42,7 +42,6 @@ BFX lending bot runs automatic funding in Bitfinex. (AWS based)
    # config
    SYMBOL=fUSD
    EACH_OFFER=200
-   LOWEST_OFFER=100
    BASE_RATE=0.04
    JUMP_RATE=0.06
    KEEP_MONEY=0
@@ -53,7 +52,6 @@ BFX lending bot runs automatic funding in Bitfinex. (AWS based)
    # config
    SYMBOL=fUSD,fUST
    EACH_OFFER=500,500
-   LOWEST_OFFER=400,200
    BASE_RATE=0.03,0.04
    JUMP_RATE=0.06,0.06
    KEEP_MONEY=2000,0
